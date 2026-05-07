@@ -95,7 +95,7 @@ def add_expense(expenses):
 def view_expenses(expenses):
     """Display all expenses in a table."""
     if not expenses:
-        print("\n📭 No expenses recorded yet.")
+        print("\n No expenses recorded yet.")
         return
 
     print("\n--- All Expenses ---")
@@ -124,7 +124,7 @@ def delete_expense(expenses):
         if e["id"] == eid:
             expenses.pop(i)
             save_expenses(expenses)
-            print("🗑️  Expense deleted.")
+            print(" Expense deleted.")
             return
     print(" ID not found.")
 
@@ -174,14 +174,12 @@ def edit_expense(expenses):
                     print(" Invalid date — keeping original.")
 
             save_expenses(expenses)
-            print("✅ Expense updated.")
+            print(" Expense updated.")
             return
     print(" ID not found.")
 
 
-# ─────────────────────────────────────────────
-#  Search & Filter
-# ─────────────────────────────────────────────
+
 
 def search_expenses(expenses):
     """Search by keyword in description or category."""
@@ -234,7 +232,7 @@ def monthly_summary(expenses):
 
     monthly = defaultdict(float)
     for e in expenses:
-        month = e["date"][:7]   # "YYYY-MM"
+        month = e["date"][:7]   
         monthly[month] += e["amount"]
 
     print("\n--- Monthly Summary ---")
@@ -313,7 +311,7 @@ def export_to_csv(expenses):
     
     try:
         with open(filename, "w", newline='') as f:
-            # your existing write code
+            
             pass
         print(f"\n Exported to {filename}")
     except PermissionError:
@@ -358,7 +356,7 @@ def main():
         elif choice == "10": set_budget_alert(expenses)
         elif choice == "11": export_to_csv(expenses)
         elif choice == "0":
-            print("\n👋 Goodbye! Keep tracking your expenses.\n")
+            print("\n Goodbye! Keep tracking your expenses.\n")
             break
         else:
             print(" Invalid option. Please try again.")
