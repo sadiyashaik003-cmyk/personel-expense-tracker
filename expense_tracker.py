@@ -25,9 +25,6 @@ CATEGORIES = [
 ]
 
 
-# ─────────────────────────────────────────────
-#  Data helpers
-# ─────────────────────────────────────────────
 
 def load_expenses():
     """Load expenses from JSON file."""
@@ -48,9 +45,7 @@ def generate_id(expenses):
     return max((e["id"] for e in expenses), default=0) + 1
 
 
-# ─────────────────────────────────────────────
-#  Core operations
-# ─────────────────────────────────────────────
+
 
 def add_expense(expenses):
     """Prompt user and add a new expense."""
@@ -58,7 +53,7 @@ def add_expense(expenses):
     try:
         amount = float(input("Amount (₹): ").strip())
     except ValueError:
-        print("❌ Invalid amount. Please enter a number.")
+        print(" Invalid amount. Please enter a number.")
         return
 
     print("Categories:")
@@ -68,7 +63,7 @@ def add_expense(expenses):
         cat_choice = int(input("Select category (number): ").strip())
         category = CATEGORIES[cat_choice - 1]
     except (ValueError, IndexError):
-        print("❌ Invalid category selection.")
+        print(" Invalid category selection.")
         return
 
     description = input("Description (optional): ").strip() or "No description"
@@ -80,7 +75,7 @@ def add_expense(expenses):
             datetime.strptime(date_input, "%Y-%m-%d")
             date = date_input
         except ValueError:
-            print("❌ Invalid date format.")
+            print(" Invalid date format.")
             return
 
     expense = {
@@ -94,7 +89,7 @@ def add_expense(expenses):
 
     expenses.append(expense)
     save_expenses(expenses)
-    print(f"✅ Expense added! [ID: {expense['id']}]")
+    print(f" Expense added! [ID: {expense['id']}]")
 
 
 def view_expenses(expenses):
@@ -122,7 +117,7 @@ def delete_expense(expenses):
     try:
         eid = int(input("\nEnter ID to delete: ").strip())
     except ValueError:
-        print("❌ Invalid ID.")
+        print(" Invalid ID.")
         return
 
     for i, e in enumerate(expenses):
@@ -131,7 +126,7 @@ def delete_expense(expenses):
             save_expenses(expenses)
             print("🗑️  Expense deleted.")
             return
-    print("❌ ID not found.")
+    print(" ID not found.")
 
 
 def edit_expense(expenses):
@@ -142,7 +137,7 @@ def edit_expense(expenses):
     try:
         eid = int(input("\nEnter ID to edit: ").strip())
     except ValueError:
-        print("❌ Invalid ID.")
+        print(" Invalid ID.")
         return
 
     for e in expenses:
@@ -154,7 +149,7 @@ def edit_expense(expenses):
                 try:
                     e["amount"] = round(float(amt_input), 2)
                 except ValueError:
-                    print("❌ Invalid amount — keeping original.")
+                    print(" Invalid amount — keeping original.")
 
             print("Categories:")
             for i, cat in enumerate(CATEGORIES, 1):
@@ -164,7 +159,7 @@ def edit_expense(expenses):
                 try:
                     e["category"] = CATEGORIES[int(cat_input) - 1]
                 except (ValueError, IndexError):
-                    print("❌ Invalid selection — keeping original.")
+                    print(" Invalid selection — keeping original.")
 
             desc_input = input(f"Description [{e['description']}]: ").strip()
             if desc_input:
@@ -176,12 +171,12 @@ def edit_expense(expenses):
                     datetime.strptime(date_input, "%Y-%m-%d")
                     e["date"] = date_input
                 except ValueError:
-                    print("❌ Invalid date — keeping original.")
+                    print(" Invalid date — keeping original.")
 
             save_expenses(expenses)
             print("✅ Expense updated.")
             return
-    print("❌ ID not found.")
+    print(" ID not found.")
 
 
 # ─────────────────────────────────────────────
@@ -196,13 +191,13 @@ def search_expenses(expenses):
         if keyword in e["description"].lower() or keyword in e["category"].lower()
     ]
     if results:
-        print(f"\n🔍 Found {len(results)} result(s):")
+        print(f"\n Found {len(results)} result(s):")
         print(f"{'ID':<5} {'Date':<12} {'Category':<20} {'Amount':>10}  Description")
         print("-" * 70)
         for e in results:
             print(f"{e['id']:<5} {e['date']:<12} {e['category']:<20} ₹{e['amount']:>9.2f}  {e['description']}")
     else:
-        print("🔍 No results found.")
+        print(" No results found.")
 
 
 def filter_by_date(expenses):
@@ -213,13 +208,13 @@ def filter_by_date(expenses):
         datetime.strptime(start, "%Y-%m-%d")
         datetime.strptime(end, "%Y-%m-%d")
     except ValueError:
-        print("❌ Invalid date format.")
+        print(" Invalid date format.")
         return
 
     results = [e for e in expenses if start <= e["date"] <= end]
     if results:
         total = sum(e["amount"] for e in results)
-        print(f"\n📅 Expenses from {start} to {end}:")
+        print(f"\n Expenses from {start} to {end}:")
         print(f"{'ID':<5} {'Date':<12} {'Category':<20} {'Amount':>10}  Description")
         print("-" * 70)
         for e in sorted(results, key=lambda x: x["date"]):
@@ -227,17 +222,14 @@ def filter_by_date(expenses):
         print("-" * 70)
         print(f"{'Total':<38} ₹{total:>9.2f}")
     else:
-        print("📅 No expenses in that range.")
+        print(" No expenses in that range.")
 
 
-# ─────────────────────────────────────────────
-#  Reports & Analytics
-# ─────────────────────────────────────────────
 
 def monthly_summary(expenses):
     """Show a month-wise spending summary."""
     if not expenses:
-        print("\n📭 No data to summarize.")
+        print("\n No data to summarize.")
         return
 
     monthly = defaultdict(float)
@@ -257,7 +249,7 @@ def monthly_summary(expenses):
 def category_summary(expenses):
     """Show spending breakdown by category."""
     if not expenses:
-        print("\n📭 No data to summarize.")
+        print("\n No data to summarize.")
         return
 
     cat_totals = defaultdict(float)
@@ -279,7 +271,7 @@ def category_summary(expenses):
 def top_expenses(expenses):
     """Show the top 5 largest expenses."""
     if not expenses:
-        print("\n📭 No data available.")
+        print("\n No data available.")
         return
     top = sorted(expenses, key=lambda x: x["amount"], reverse=True)[:5]
     print("\n--- Top 5 Expenses ---")
@@ -294,19 +286,19 @@ def set_budget_alert(expenses):
     try:
         budget = float(input("Set monthly budget (₹): ").strip())
     except ValueError:
-        print("❌ Invalid amount.")
+        print(" Invalid amount.")
         return
 
     this_month = datetime.today().strftime("%Y-%m")
     spent = sum(e["amount"] for e in expenses if e["date"].startswith(this_month))
     remaining = budget - spent
 
-    print(f"\n💰 Budget:    ₹{budget:.2f}")
-    print(f"💸 Spent:     ₹{spent:.2f}")
+    print(f"\n Budget:    ₹{budget:.2f}")
+    print(f" Spent:     ₹{spent:.2f}")
     if remaining >= 0:
-        print(f"✅ Remaining: ₹{remaining:.2f}")
+        print(f" Remaining: ₹{remaining:.2f}")
     else:
-        print(f"⚠️  OVER BUDGET by ₹{abs(remaining):.2f}!")
+        print(f"  OVER BUDGET by ₹{abs(remaining):.2f}!")
 
 
 # ─────────────────────────────────────────────
@@ -333,7 +325,7 @@ def export_to_csv(expenses):
 
 MENU = """
 ╔══════════════════════════════════════╗
-║    💰 Personal Expense Tracker 💰    ║
+║     Personal Expense Tracker         ║
 ╠══════════════════════════════════════╣
 ║  1. Add Expense                      ║
 ║  2. View All Expenses                ║
@@ -373,7 +365,7 @@ def main():
             print("\n👋 Goodbye! Keep tracking your expenses.\n")
             break
         else:
-            print("❌ Invalid option. Please try again.")
+            print(" Invalid option. Please try again.")
 
 
 if __name__ == "__main__":
