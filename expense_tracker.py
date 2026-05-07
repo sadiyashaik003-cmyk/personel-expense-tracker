@@ -3,16 +3,11 @@ Personal Expense Tracker
 ========================
 Track, categorize, and analyze your daily expenses.
 """
-
 import json
 import os
 from datetime import datetime
 from collections import defaultdict
-
-
-
 DATA_FILE = r"C:\Users\shaik\Downloads\files\expenses.json"
-
 CATEGORIES = [
     "Food & Dining",
     "Transport",
@@ -23,30 +18,19 @@ CATEGORIES = [
     "Education",
     "Other"
 ]
-
-
-
 def load_expenses():
     """Load expenses from JSON file."""
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
             return json.load(f)
     return []
-
-
 def save_expenses(expenses):
     """Save expenses to JSON file."""
     with open(DATA_FILE, "w") as f:
         json.dump(expenses, f, indent=2)
-
-
 def generate_id(expenses):
     """Generate a unique integer ID."""
     return max((e["id"] for e in expenses), default=0) + 1
-
-
-
-
 def add_expense(expenses):
     """Prompt user and add a new expense."""
     print("\n--- Add New Expense ---")
@@ -55,7 +39,6 @@ def add_expense(expenses):
     except ValueError:
         print(" Invalid amount. Please enter a number.")
         return
-
     print("Categories:")
     for i, cat in enumerate(CATEGORIES, 1):
         print(f"  {i}. {cat}")
@@ -90,8 +73,6 @@ def add_expense(expenses):
     expenses.append(expense)
     save_expenses(expenses)
     print(f" Expense added! [ID: {expense['id']}]")
-
-
 def view_expenses(expenses):
     """Display all expenses in a table."""
     if not expenses:
@@ -107,8 +88,6 @@ def view_expenses(expenses):
         total += e["amount"]
     print("-" * 70)
     print(f"{'TOTAL':<38} ₹{total:>9.2f}")
-
-
 def delete_expense(expenses):
     """Delete an expense by ID."""
     view_expenses(expenses)
@@ -127,8 +106,6 @@ def delete_expense(expenses):
             print(" Expense deleted.")
             return
     print(" ID not found.")
-
-
 def edit_expense(expenses):
     """Edit an existing expense."""
     view_expenses(expenses)
@@ -177,10 +154,6 @@ def edit_expense(expenses):
             print(" Expense updated.")
             return
     print(" ID not found.")
-
-
-
-
 def search_expenses(expenses):
     """Search by keyword in description or category."""
     keyword = input("\nSearch keyword: ").strip().lower()
@@ -196,8 +169,6 @@ def search_expenses(expenses):
             print(f"{e['id']:<5} {e['date']:<12} {e['category']:<20} ₹{e['amount']:>9.2f}  {e['description']}")
     else:
         print(" No results found.")
-
-
 def filter_by_date(expenses):
     """Filter expenses between two dates."""
     start = input("Start date (YYYY-MM-DD): ").strip()
@@ -221,9 +192,6 @@ def filter_by_date(expenses):
         print(f"{'Total':<38} ₹{total:>9.2f}")
     else:
         print(" No expenses in that range.")
-
-
-
 def monthly_summary(expenses):
     """Show a month-wise spending summary."""
     if not expenses:
@@ -242,8 +210,6 @@ def monthly_summary(expenses):
         print(f"{month:<12} ₹{monthly[month]:>13.2f}")
     print("-" * 28)
     print(f"{'Grand Total':<12} ₹{sum(monthly.values()):>13.2f}")
-
-
 def category_summary(expenses):
     """Show spending breakdown by category."""
     if not expenses:
@@ -264,8 +230,6 @@ def category_summary(expenses):
         print(f"{cat:<22} ₹{total:>9.2f}  {pct:>6.1f}%  {bar}")
     print("-" * 44)
     print(f"{'TOTAL':<22} ₹{grand:>9.2f}")
-
-
 def top_expenses(expenses):
     """Show the top 5 largest expenses."""
     if not expenses:
@@ -277,8 +241,6 @@ def top_expenses(expenses):
     print("-" * 70)
     for rank, e in enumerate(top, 1):
         print(f"{rank:<6} {e['date']:<12} {e['category']:<20} ₹{e['amount']:>9.2f}  {e['description']}")
-
-
 def set_budget_alert(expenses):
     """Warn if this month's spending exceeds a given budget."""
     try:
@@ -297,10 +259,6 @@ def set_budget_alert(expenses):
         print(f" Remaining: ₹{remaining:.2f}")
     else:
         print(f"  OVER BUDGET by ₹{abs(remaining):.2f}!")
-
-
-
-
 def export_to_csv(expenses):
     if not expenses:
         print("\n Nothing to export.")
@@ -360,7 +318,6 @@ def main():
             break
         else:
             print(" Invalid option. Please try again.")
-
 
 if __name__ == "__main__":
     main()
