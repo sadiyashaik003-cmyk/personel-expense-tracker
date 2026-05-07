@@ -301,9 +301,7 @@ def set_budget_alert(expenses):
         print(f"  OVER BUDGET by ₹{abs(remaining):.2f}!")
 
 
-# ─────────────────────────────────────────────
-#  Export
-# ─────────────────────────────────────────────
+
 
 def export_to_csv(expenses):
     if not expenses:
@@ -320,8 +318,6 @@ def export_to_csv(expenses):
         print(f"\n Exported to {filename}")
     except PermissionError:
         print("\n Permission denied! Close the file if it's open in Excel.")
-#  Menu
-# ─────────────────────────────────────────────
 
 MENU = """
 ╔══════════════════════════════════════╗
